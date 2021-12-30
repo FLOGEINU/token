@@ -642,13 +642,18 @@
       
       function setTaxFeePercent(uint256 taxFee) external onlyOwner() {
           _taxFee = taxFee;
+          require(_taxFee >= 0, "Tax fee must be greater than or equal to zero.");
+          require(_taxFee+_liquidityFee < 26, "Sum of taxes must be under 26%");
       }
       
       function setLiquidityFeePercent(uint256 liquidityFee) external onlyOwner() {
           _liquidityFee = liquidityFee;
+          require(_liquidityFee >= 0, "Liquidity fee must be greater than or equal to zero.");
+          require(_taxFee+_liquidityFee < 26, "Sum of taxes must be under 26%");
       }
      
       function setMaxTxPercent(uint256 maxTxPercent) external onlyOwner() {
+          require(maxTxPercent >= 0.05, "maxTxPercent should be greater than or equal to 0.05%");
           _maxTxAmount = _tTotal.mul(maxTxPercent).div(
               10**2
           );
